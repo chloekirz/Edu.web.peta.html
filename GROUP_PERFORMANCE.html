@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Dev Learning Hub</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #eef7f6;
+            color: #333;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-view {
+            display: none;
+        }
+        .page-view.active {
+            display: block;
+        }
+
+        /* Top Banner Photo */
+        .green-banner {
+            width: 100%;
+            height: 280px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            background-color: #2b7a78;
+        }
+
+        .green-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* MAIN DASHBOARD LAYOUT */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 280px 1.2fr 220px 1.2fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 1000px) {
+            .dashboard-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #17252a;
+        }
+
+        /* RED SECTION */
+        .red-section {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        .red-cards-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .red-card {
+            flex: 1;
+            border-radius: 16px;
+            padding: 8px;
+            cursor: pointer;
+            border: 2px solid #e0f2f1;
+            transition: transform 0.2s, border-color 0.2s;
+            background: #f0f7f7;
+            text-align: center;
+        }
+
+        .red-card:hover {
+            transform: translateY(-4px);
+            border-color: #43aa8b;
+        }
+
+        .red-card img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+
+        .red-card span {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #2b7a78;
+        }
+
+        /* YELLOW SECTION */
+        .yellow-section {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        .topic-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        .topic-pill img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid white;
+            flex-shrink: 0;
+        }
+
+        .topic-pill:hover {
+            transform: translateX(4px);
+            filter: brightness(0.95);
+        }
+
+        .pill-1 { background-color: #a8dadc; color: #1d3557; }
+        .pill-2 { background-color: #457b9d; }
+        .pill-3 { background-color: #1d3557; }
+        .pill-4 { background-color: #3b5249; }
+        .pill-5 { background-color: #2a9d8f; }
+
+        /* PURPLE SECTION */
+        .purple-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quiz-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-card:hover {
+            transform: scale(1.03);
+            border-color: #8338ec;
+        }
+
+        .quiz-card img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .quiz-card b {
+            font-size: 0.9rem;
+            color: #8338ec;
+        }
+
+        /* BLUE SECTION */
+        .blue-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .blue-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 10px 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .blue-card:hover {
+            transform: translateY(-2px);
+            border-color: #3a86ff;
+        }
+
+        .blue-card img {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .blue-card-text h4 {
+            font-size: 0.9rem;
+            color: #17252a;
+        }
+
+        .blue-card-text p {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        /* SUBPAGE COMMON STYLES */
+        .subpage-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .controls-bar {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #2b7a78;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover {
+            background-color: #17252a;
+        }
+
+        .btn-home {
+            background-color: #3a86ff;
+        }
+        .btn-home:hover {
+            background-color: #1d3557;
+        }
+
+        .text-box-display {
+            width: 100%;
+            min-height: 250px;
+            border-radius: 16px;
+            padding: 25px;
+            border: 2px solid #2b7a78;
+            background-color: #f0f7f7;
+            margin-top: 15px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #1d3557;
+            white-space: pre-line;
+        }
+
+        /* Quiz Styles */
+        .quiz-q {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        .quiz-q p {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .quiz-q label {
+            display: block;
+            margin: 4px 0;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .score-box {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2b7a78;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HOMEPAGE VIEW -->
+    <div id="home" class="page-view active">
+
+        <div class="green-banner">
+            <img src="https://i.ibb.co/Q1F0m4x/27448-E7-F-A255-4-DC2-846-B-74-F8-C63-DF216.jpg" alt="Top Hero Banner">
+        </div>
+
+        <div class="dashboard-grid">
+
+            <!-- RED SECTION -->
+            <div class="red-section">
+                <div class="section-title">But first, what is the <i>internet?</i></div>
+                <div class="red-cards-container">
+                    <div class="red-card" onclick="navigateTo('topic-red1')">
+                        <img src="https://i.ibb.co/KxLrKrS4/8-C150041-A9-FD-402-D-9467-C06552-BC949-C.png" alt="Pioneers">
+                        <span>The People Who Started it All</span>
+                    </div>
+                    <div class="red-card" onclick="navigateTo('topic-red2')">
+                        <img src="https://i.ibb.co/N2mk6nGD/8252378-F-5417-4631-9432-79020-CEBCC12.png" alt="Importance">
+                        <span>What's The Internet's Importance</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YELLOW SECTION -->
+            <div class="yellow-section">
+                <div class="section-title">Topics:</div>
+                
+                <div class="topic-pill pill-1" onclick="navigateTo('topic-internet')">
+                    <img src="https://i.ibb.co/DfR3SyT1/0-BF3-C814-4-AFE-4549-AB6-A-696-DE21-FF237.png" alt="Pill 1">
+                    <span>1. How The Internet Works</span>
+                </div>
+                
+                <div class="topic-pill pill-2" onclick="navigateTo('topic-html')">
+                    <img src="https://i.ibb.co/DfR3SyT1/0-BF3-C814-4-AFE-4549-AB6-A-696-DE21-FF237.png" alt="Pill 2">
+                    <span>2. Basic HTML Structure</span>
+                </div>
+                
+                <div class="topic-pill pill-3" onclick="navigateTo('topic-text')">
+                    <img src="https://i.ibb.co/DfR3SyT1/0-BF3-C814-4-AFE-4549-AB6-A-696-DE21-FF237.png" alt="Pill 3">
+                    <span>3. Text Formatting & Org</span>
+                </div>
+                
+                <div class="topic-pill pill-4" onclick="navigateTo('topic-media')">
+                    <img src="https://i.ibb.co/DfR3SyT1/0-BF3-C814-4-AFE-4549-AB6-A-696-DE21-FF237.png" alt="Pill 4">
+                    <span>4. Images, Links, Tables</span>
+                </div>
+                
+                <div class="topic-pill pill-5" onclick="navigateTo('topic-js')">
+                    <img src="https://i.ibb.co/DfR3SyT1/0-BF3-C814-4-AFE-4549-AB6-A-696-DE21-FF237.png" alt="Pill 5">
+                    <span>5. Simple JS Interactivity</span>
+                </div>
+            </div>
+
+            <!-- PURPLE SECTION -->
+            <div class="purple-section">
+                <div class="quiz-card" onclick="navigateTo('quiz-1')">
+                    <img src="https://i.ibb.co/Rk4VhtWY/C1-F7-A65-F-A3-DE-4-ED8-AD03-4-F240161-EE9-A.jpg" alt="Quiz 1">
+                    <b>Quiz 1 (5 Qs)</b>
+                </div>
+                <div class="quiz-card" onclick="navigateTo('quiz-2')">
+                    <img src="https://i.ibb.co/bjwV9bzT/A08-A0-D7-E-D20-E-421-F-961-E-0-AFAFC3331-C9.jpg" alt="Quiz 2">
+                    <b>Quiz 0.2 (5 Qs)</b>
+                </div>
+            </div>
+
+            <!-- BLUE SECTION -->
+            <div class="blue-section">
+                <div class="blue-card" onclick="navigateTo('topic-blue1')">
+                    <img src="https://i.ibb.co/wr0GPHhR/IMG-9988.jpg" alt="Blue 1">
+                    <div class="blue-card-text">
+                        <h4>HTTP Protocols</h4>
+                        <p>Click to read lesson text</p>
+                    </div>
+                </div>
+                <div class="blue-card" onclick="navigateTo('topic-blue2')">
+                    <img src="https://i.ibb.co/j9yMCt2g/IMG-9990.jpg" alt="Blue 2">
+                    <div class="blue-card-text">
+                        <h4>DOM & Render Tree</h4>
+                        <p>Click to read lesson text</p>
+                    </div>
+                </div>
+                <div class="blue-card" onclick="navigateTo('topic-blue3')">
+                    <img src="https://i.ibb.co/v6LzT8Lk/IMG-9989.jpg" alt="Blue 3">
+                    <div class="blue-card-text">
+                        <h4>CSS Layout Engines</h4>
+                        <p>Click to read lesson text</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SUBPAGES -->
+
+    <div id="topic-red1" class="page-view">
+        <div class="subpage-card">
+            <h2>The People Who Started It All</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-red1', 'Who Created It:\n\nThe internet was built through key innovations over several decades:\n\n1. ARPANET (1969): Funded by the U.S. Department of Defense, it introduced packet-switching to send data in broken-up packets across decentralized networks.\n2. TCP/IP (1970s): Vint Cerf and Bob Kahn created standard rules for network addressing and data transmission, enabling diverse networks to connect seamlessly.\n3. World Wide Web (1989): Sir Tim Berners-Lee invented HTML, HTTP, and URLs at CERN, creating a visual navigation layer over the internet infrastructure.')">Who Created It</button>
+                <button class="btn-action" onclick="swapText('txt-red1', 'Why Did They Create It?\n\n1. Cold War Resiliency: The military needed a communication structure without a central point of failure, ensuring network continuity if individual nodes were destroyed.\n2. Resource Sharing: Early researchers needed to access high-powered mainframe computers remotely across university campuses.\n3. Information Accessibility: Today, it serves as the backbone for worldwide communication, e-commerce, real-time news, and decentralized global collaboration.')">Why Did They Create It?</button>
+            </div>
+            <div id="txt-red1" class="text-box-display">Select an option above to load topic information.</div>
+        </div>
+    </div>
+
+    <div id="topic-red2" class="page-view">
+        <div class="subpage-card">
+            <h2>Importance of the Internet</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-red2', 'Socio-Economic Impact:\n\nThe internet has shifted human society into an information age. It acts as an open archive of knowledge, democratizing access to learning resources worldwide.\n\nFrom an economic standpoint, it drives trade through e-commerce platforms, supports flexible hybrid work environments, and powers real-time global supply chains.')">Economic Impact</button>
+                <button class="btn-action" onclick="swapText('txt-red2', 'Infrastructure & Communication:\n\nBeyond economic value, the internet serves as essential public infrastructure. It powers real-time emergency broadcasts, enables global medical research sharing, and supports platforms for personal expression and public policy participation.')">Infrastructure Value</button>
+            </div>
+            <div id="txt-red2" class="text-box-display">Select an option above to load topic information.</div>
+        </div>
+    </div>
+
+    <div id="topic-internet" class="page-view">
+        <div class="subpage-card">
+            <h2>1. How The Internet Works</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-internet', 'The Request Lifecycle:\n\n1. URL Entry: You enter a Web Address (e.g., example.com).\n2. DNS Lookup: Domain Name System servers translate domain names into numerical IP addresses (e.g., 93.184.216.34).\n3. Packet Routing: Routers forward data packets across internet exchange points using TCP/IP protocols.\n4. Server Response: The destination web server processes the request and sends HTML, CSS, and JS back to your client browser.')">Detailed Request Lifecycle</button>
+                <button class="btn-action" onclick="swapText('txt-internet', 'Core Protocols:\n\n- IP (Internet Protocol): Handles addressing and routing packets to destination devices.\n- TCP (Transmission Control Protocol): Ensures data arrives sequentially without missing packets.\n- DNS: Acts as the phonebook of the web, converting human-friendly text to network addresses.')">Core Protocols</button>
+            </div>
+            <div id="txt-internet" class="text-box-display">Select an option above to load topic information.</div>
+        </div>
+    </div>
+
+    <div id="topic-html" class="page-view">
+        <div class="subpage-card">
+            <h2>2. Basic HTML Structure</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-html', 'Structural Elements Overview:\n\n1. <!DOCTYPE html>: Tells browsers to parse documents using modern HTML5 standards.\n2. <html>: The top-level root element containing all document tags.\n3. <head>: Contains non-rendered information like meta tags, title elements, external CSS links, and scripts.\n4. <body>: Houses all visual layout components like headings, media elements, links, and forms.')">Document Layout</button>
+                <button class="btn-action" onclick="swapText('txt-html', 'Minimal Boilerplate Example:\n\n<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <title>Page Title</title>\n  </head>\n  <body>\n    <h1>Hello World</h1>\n  </body>\n</html>')">Code Example</button>
+            </div>
+            <div id="txt-html" class="text-box-display">Select an option above to load topic information.</div>
+        </div>
+    </div>
+
+    <div id="topic-text" class="page-view">
+        <div class="subpage-card">
+            <h2>3. Text Formatting & Organization</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-text', 'Headings & Paragraphs:\n\nHTML uses structural tags to create document hierarchies:\n- Headings (<h1> to <h6>): Establish content priority. Use a single <h1> for main titles, down through <h6> for sub-sections.\n- Paragraphs (<p>): Group related body sentences, automatically applying vertical spacing.')">Semantic Hierarchy</button>
+                <button class="btn-action" onclick="swapText('txt-text', 'Inline Elements:\n\n- <strong> or <b>: Emphasize important text in bold.\n- <em> or <i>: Apply italic styling for emphasis or technical terms.\n- <mark>: Highlights background text visually.\n- <span>: Generic inline container used for custom CSS styling.')">Inline Formatting</button>
+            </div>
+            <div id="txt-text" class="text-box-display">Select an option above to load topic information.</div>
+        </div>
+    </div>
+
+    <div id="topic-media" class="page-view">
+        <div class="subpage-card">
+            <h2>4. Images, Links & Tables</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-media', 'Links & Media:\n\n- Hyperlinks: Created using <a href=\"URL\">. The href attribute specifies destination addresses.\n- Images: Embedded using self-closing <img src=\"path\" alt=\"description\"> tags. The alt text improves accessibility for screen readers and SEO indexing.')">Links & Images</button>
+                <button class="btn-action" onclick="swapText('txt-media', 'Tables Structure:\n\nTables organize structured data:\n- <table>: Main table container.\n- <tr>: Table row.\n- <th>: Header cells with bold, centered text.\n- <td>: Standard data cells containing values.')">Table Markup</button>
+            </div>
+            <div id="txt-media" class="text-box-display">Select an option above to load topic information.</div>
+        </div>
+    </div>
+
+    <div id="topic-js" class="page-view">
+        <div class="subpage-card">
+            <h2>5. Simple JS Interactivity</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-js', 'JavaScript Concepts:\n\nJavaScript turns static documents into dynamic web apps.\n- Event Listeners: Capture actions like clicks, keyboard input, or scrolls (e.g., onclick=\"myFunction()\").\n- DOM Operations: Dynamically read or modify content using document.getElementById() or querySelector().')">Interactivity Overview</button>
+                <button class="btn-action" onclick="swapText('txt-js', 'Simple Code Sample:\n\nfunction changeText() {\n  const el = document.getElementById(\"demo\");\n  el.innerText = \"Updated Content!\";\n}')">JS Example</button>
+            </div>
+            <div id="txt-js" class="text-box-display">Select an option above to load topic information.</div>
+        </div>
+    </div>
+
+    <div id="topic-blue1" class="page-view">
+        <div class="subpage-card">
+            <h2>HTTP Request Lifecycle</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-b1', 'Request Methods:\n\n- GET: Retrieves documents or assets from web servers without altering remote data.\n- POST: Submits form inputs or payload data to server databases.\n- PUT/DELETE: Updates or removes target resources on the backend server.')">HTTP Methods</button>
+                <button class="btn-action" onclick="swapText('txt-b1', 'Status Codes:\n\n- 200 OK: Request succeeded.\n- 301/302: Redirection status.\n- 404 Not Found: Requested URL does not exist.\n- 500 Internal Server Error: Server failed to fulfill request.')">HTTP Status Codes</button>
+            </div>
+            <div id="txt-b1" class="text-box-display">Select an option above to load lesson text.</div>
+        </div>
+    </div>
+
+    <div id="topic-blue2" class="page-view">
+        <div class="subpage-card">
+            <h2>DOM Tree & Parsing</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-b2', 'DOM Parsing:\n\nBrowsers parse raw HTML markup into an object tree called the Document Object Model (DOM).\n\nEach node represents an element, attribute, or text fragment. JavaScript interacts directly with this object tree to repaint UI layouts without full page reloads.')">DOM Parsing</button>
+                <button class="btn-action" onclick="swapText('txt-b2', 'Render Tree Construction:\n\nThe browser combines the DOM tree and CSS Object Model (CSSOM) into a unified Render Tree. It computes visual properties, layouts geometry, and paints pixels onto the viewport.')">Render Pipeline</button>
+            </div>
+            <div id="txt-b2" class="text-box-display">Select an option above to load lesson text.</div>
+        </div>
+    </div>
+
+    <div id="topic-blue3" class="page-view">
+        <div class="subpage-card">
+            <h2>CSS Box Model & Engines</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+                <button class="btn-action" onclick="swapText('txt-b3', 'The Box Model:\n\nEvery HTML element is rendered as a rectangular container comprising four distinct layers:\n1. Content: Actual text, images, or elements.\n2. Padding: Transparent area clearing space around content.\n3. Border: Outer line wrapping padding and content.\n4. Margin: Transparent area outside the border separating elements.')">Box Model Structure</button>
+                <button class="btn-action" onclick="swapText('txt-b3', 'Box Sizing Trick:\n\nBy default, element widths exclude padding and borders. Setting CSS property {\n  box-sizing: border-box;\n} ensures padding and border widths are calculated inside total element dimensions, preventing layout overflow issues.')">Border Box Sizing</button>
+            </div>
+            <div id="txt-b3" class="text-box-display">Select an option above to load lesson text.</div>
+        </div>
+    </div>
+
+    <!-- QUIZZES -->
+
+    <div id="quiz-1" class="page-view">
+        <div class="subpage-card">
+            <h2>Quiz 1: Web Fundamentals (5 Questions)</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+            </div>
+            <form id="qform-1">
+                <div class="quiz-q">
+                    <p>1. What does HTML stand for?</p>
+                    <label><input type="radio" name="q1" value="a"> Hyper Text Markup Language</label>
+                    <label><input type="radio" name="q1" value="b"> High Tech Multi Language</label>
+                </div>
+                <div class="quiz-q">
+                    <p>2. Which tag contains non-visual page metadata?</p>
+                    <label><input type="radio" name="q2" value="a"> &lt;head&gt;</label>
+                    <label><input type="radio" name="q2" value="b"> &lt;body&gt;</label>
+                </div>
+                <div class="quiz-q">
+                    <p>3. What tag is used for embedding images?</p>
+                    <label><input type="radio" name="q3" value="a"> &lt;pic&gt;</label>
+                    <label><input type="radio" name="q3" value="b"> &lt;img&gt;</label>
+                </div>
+                <div class="quiz-q">
+                    <p>4. Which protocol translates domain names to numerical IP addresses?</p>
+                    <label><input type="radio" name="q4" value="a"> DNS</label>
+                    <label><input type="radio" name="q4" value="b"> FTP</label>
+                </div>
+                <div class="quiz-q">
+                    <p>5. Which HTML tag creates hyperlinks?</p>
+                    <label><input type="radio" name="q5" value="a"> &lt;link&gt;</label>
+                    <label><input type="radio" name="q5" value="b"> &lt;a&gt;</label>
+                </div>
+                <button type="button" class="btn-action" onclick="gradeQuiz(1, ['a','a','b','a','b'])">Submit Quiz 1</button>
+            </form>
+            <div id="score-1" class="score-box"></div>
+        </div>
+    </div>
+
+    <div id="quiz-2" class="page-view">
+        <div class="subpage-card">
+            <h2>Quiz 0.2: HTML & JS (5 Questions)</h2>
+            <div class="controls-bar">
+                <button class="btn-action btn-home" onclick="navigateTo('home')">← Back to Home Page</button>
+            </div>
+            <form id="qform-2">
+                <div class="quiz-q">
+                    <p>1. Which tag creates a table row?</p>
+                    <label><input type="radio" name="q1" value="a"> &lt;tr&gt;</label>
+                    <label><input type="radio" name="q1" value="b"> &lt;td&gt;</label>
+                </div>
+                <div class="quiz-q">
+                    <p>2. What language makes web applications dynamic?</p>
+                    <label><input type="radio" name="q2" value="a"> CSS</label>
+                    <label><input type="radio" name="q2" value="b"> JavaScript</label>
+                </div>
+                <div class="quiz-q">
+                    <p>3. Which attribute specifies image source paths?</p>
+                    <label><input type="radio" name="q3" value="a"> src</label>
+                    <label><input type="radio" name="q3" value="b"> href</label>
+                </div>
+                <div class="quiz-q">
+                    <p>4. How do you emphasize text as bold semantically?</p>
+                    <label><input type="radio" name="q4" value="a"> &lt;b&gt; or &lt;strong&gt;</label>
+                    <label><input type="radio" name="q4" value="b"> &lt;bold&gt;</label>
+                </div>
+                <div class="quiz-q">
+                    <p>5. Which inline handler listens for mouse click events?</p>
+                    <label><input type="radio" name="q5" value="a"> onclick</label>
+                    <label><input type="radio" name="q5" value="b"> onhover</label>
+                </div>
+                <button type="button" class="btn-action" onclick="gradeQuiz(2, ['a','b','a','a','a'])">Submit Quiz 0.2</button>
+            </form>
+            <div id="score-2" class="score-box"></div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(p => p.classList.remove('active'));
+
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function swapText(elementId, textContent) {
+            const textElement = document.getElementById(elementId);
+            if (textElement) {
+                textElement.innerText = textContent;
+            }
+        }
+
+        function gradeQuiz(quizNum, key) {
+            let score = 0;
+            const form = document.getElementById(`qform-${quizNum}`);
+            
+            key.forEach((ans, idx) => {
+                const q = form[`q${idx + 1}`];
+                if (q && q.value === ans) {
+                    score++;
+                }
+            });
+
+            const scoreBox = document.getElementById(`score-${quizNum}`);
+            scoreBox.innerText = `Your Score: ${score} / 5 (${(score / 5) * 100}%)`;
+        }
+    </script>
+</body>
+</html>
